@@ -1,0 +1,4 @@
+{
+  "extends": ["@railgun-reloaded/tsconfig/tsconfig"],
+  "include": ["src/**/*.ts"]
+}

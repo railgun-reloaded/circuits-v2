@@ -1,0 +1,30 @@
+{
+  "name": "@railgun-reloaded/circuits-v2",
+  "version": "1.0.0",
+  "description": "Prover / verifier for Railgun transaction circuit v2",
+  "homepage": "https://github.com/railgun-reloaded/circuits-v2#readme",
+  "bugs": {
+    "url": "https://github.com/railgun-reloaded/circuits-v2/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/railgun-reloaded/circuits-v2.git"
+  },
+  "license": "MIT",
+  "author": "RAILGUN Project Contributors",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "pretest": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@railgun-reloaded/tsconfig": "^1.0.0",
+    "eslint": "^9.22.0",
+    "neostandard": "^0.12.1",
+    "typescript": "^5.8.2"
+  }
+}
