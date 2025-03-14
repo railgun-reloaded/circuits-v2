@@ -22,26 +22,26 @@ test('Should prove and verify, using publicSignals returned from prove', async f
   }
 })
 
-test.solo('Should ensure formatting is correct for SnarkjsProof', async function (assert) {
+test('Should ensure formatting is correct for SnarkjsProof', async function (assert) {
   // For each circuit
-  for (const snarkJsProof of snarkJsProofs) {
+  snarkJsProofs.forEach((snarkJsProof, i) => {
     // Format a snarkJs proof to standard format
     const returnedStandardProof = snarkJSToStandardProof(snarkJsProof)
 
     // Ensure the formatted proof is correct
-    assert.alike(returnedStandardProof, snarkJsProof)
-  }
+    assert.alike(returnedStandardProof, standardProofs[i])
+  })
 })
 
 test('Should ensure formatting is correct for Proof', async function (assert) {
   // For each circuit
-  for (const standardProof of standardProofs) {
+  standardProofs.forEach((standardProof, i) => {
   // Format a standard proof to snarkJs format
     const returnedSnarkJsProof = standardToSnarkJSProof(standardProof)
 
     // Ensure the formatted proof is correct
-    assert.alike(returnedSnarkJsProof, standardProof)
-  }
+    assert.alike(returnedSnarkJsProof, snarkJsProofs[i])
+  })
 })
 
 // test('Should ensure formatting is correct for PublicInputs', async function (assert) {
