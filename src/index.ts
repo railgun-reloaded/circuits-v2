@@ -1,5 +1,5 @@
 import { groth16, VKey } from 'snarkjs'
-import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof } from './formatter'
+import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from './formatter'
 import { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
 
 export type { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
@@ -33,7 +33,8 @@ export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArti
 export function verify (vkey: VKey, publicInputs: PublicInputs, proof: Proof): Promise<boolean> {
   // Convert to snarkjs format
   const snarkJSFormattedProof = standardToSnarkJSProof(proof)
+  const snarkJSFormattedPublicInputs = standardToSnarkJSPublicInputs(publicInputs)
 
   // verify and return
-  return groth16.verify(vkey, publicInputs, snarkJSFormattedProof)
+  return groth16.verify(vkey, snarkJSFormattedPublicInputs, snarkJSFormattedProof)
 }

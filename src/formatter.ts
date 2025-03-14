@@ -68,8 +68,21 @@ export function standardToSnarkJSProof (proof: Proof): SnarkjsProof {
     pi_a: [uint8ArrayToNumberString(proof.a.x), uint8ArrayToNumberString(proof.a.y)],
     pi_b: [
       [uint8ArrayToNumberString(proof.b.x[1]), uint8ArrayToNumberString(proof.b.x[0])],
-      [uint8ArrayToNumberString(proof.b.y[1]), uint8ArrayToNumberString(proof.b.x[0])],
+      [uint8ArrayToNumberString(proof.b.y[1]), uint8ArrayToNumberString(proof.b.y[0])],
     ],
     pi_c: [uint8ArrayToNumberString(proof.c.x), uint8ArrayToNumberString(proof.c.y)]
   }
+}
+/**
+ * Convert standard public inputs to snarkJS format
+ * @param publicInputs - Public inputs to format
+ * @returns - Formatted snarkJS public inputs
+ */
+export function standardToSnarkJSPublicInputs (publicInputs: PublicInputs) : string[] {
+  return [
+    uint8ArrayToNumberString(publicInputs.merkleRoot),
+    uint8ArrayToNumberString(publicInputs.boundParams),
+    ...publicInputs.nullifiers.map(uint8ArrayToNumberString),
+    ...publicInputs.commitments.map(uint8ArrayToNumberString)
+  ]
 }
