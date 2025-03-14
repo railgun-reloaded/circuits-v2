@@ -4,6 +4,7 @@ import vkey2x2 from './test-artifacts/2x2_vkey.json'
 import path from 'path'
 import { CircuitInputs, Proof, ProverArtifacts } from '../src'
 import { SnarkjsProof } from 'snarkjs'
+import { PublicInputs, SnarkJSCircuitInputFormat } from '../src/types'
 
 const zkey1x2 = fs.readFileSync(path.resolve(__dirname, './test-artifacts/1x2_zkey'))
 const zkey2x2 = fs.readFileSync(path.resolve(__dirname, './test-artifacts/2x2_zkey'))
@@ -23,6 +24,12 @@ const artifacts2x2 = {
   zkey: zkey2x2,
   wasm: wasm2x2
 } as ProverArtifacts
+
+interface TestVector {
+  proof: Proof;
+  inputs: CircuitInputs;
+  artifacts: ProverArtifacts;
+}
 
 export const snarkJsProofs: SnarkjsProof[] = [
   {
@@ -100,11 +107,137 @@ export const standardProofs: Proof[] = [
   }
 ]
 
-export const testVectors: {
-  artifacts: ProverArtifacts,
-  inputs: CircuitInputs,
-  proof: unknown,
-}[] = [
+export const snarkJsCircuitInputs: SnarkJSCircuitInputFormat[] = [
+  {
+    merkleRoot: '0x14a4f4001199b05fa5e3bd4ca9bd191084c891feac99be79272cdd671d5275b8',
+    boundParamsHash: '0x1d64d5e8131bfc3fc3d10343fd3daf7798ae637302501b9058085eb0c2fd2fa1',
+    nullifiers: [
+      '0x0bee1c05c9921260085974c1b47e1b0ca39d5b3dfd40cc217a97e43c8595e299'
+    ],
+    commitmentsOut: [
+      '0x20a3de4307607d219d43d4ecb6f732c5f41d5d2ea1773325d44eba6833db88a8',
+      '0x1acf333c90ef6d2845cf61c8bef557ad7a78885ad6f8cc84b8d8cc6d5c8c1191'
+    ],
+    token: '0x0000000000000000000000000000000000000000000000000000000000000000',
+    publicKey: [
+      '0x0ab643966862eed77019d5d727dfd33503f760280079a02ecbff2728e359c832',
+      '0x07151d539ec1fa7269b5521e3bc6a807b1228986434b289434333745888a1b3b'
+    ],
+    signature: [
+      '0x059aa001a731044b2e8616835a3ac2bd546e4ae01d65c5310ae2ab2d8035c917',
+      '0x0690127598e397fc02e84c39344b35504c3159614cd11682bd96d50a08740e93',
+      '0x0342eb28a3c786f8d29384b8e5231623fdb0a46aed370f8536165dde2770dd7c'
+    ],
+    randomIn: [
+      '0x000000000000000000000000000000003df8b0f35478acf7bca5a9501776b86a'
+    ],
+    valueIn: ['2'],
+    pathElements: [
+      [
+        '0x0488f89b25bc7011eaf6a5edce71aeafb9fe706faa3c0a5cd9cbe868ae3b9ffc',
+        '0x01c405064436affeae1fc8e30b2e417b4243bbb819adca3b55bb32efc3e43a4f',
+        '0x0888d37652d10d1781db54b70af87b42a2916e87118f507218f9a42a58e85ed2',
+        '0x183f531ead7217ebc316b4c02a2aad5ad87a1d56d4fb9ed81bf84f644549eaf5',
+        '0x093c48f1ecedf2baec231f0af848a57a76c6cf05b290a396707972e1defd17df',
+        '0x1437bb465994e0453357c17a676b9fdba554e215795ebc17ea5012770dfb77c7',
+        '0x12359ef9572912b49f44556b8bbbfa69318955352f54cfa35cb0f41309ed445a',
+        '0x2dc656dadc82cf7a4707786f4d682b0f130b6515f7927bde48214d37ec25a46c',
+        '0x2500bdfc1592791583acefd050bc439a87f1d8e8697eb773e8e69b44973e6fdc',
+        '0x244ae3b19397e842778b254cd15c037ed49190141b288ff10eb1390b34dc2c31',
+        '0x0ca2b107491c8ca6e5f7e22403ea8529c1e349a1057b8713e09ca9f5b9294d46',
+        '0x18593c75a9e42af27b5e5b56b99c4c6a5d7e7d6e362f00c8e3f69aeebce52313',
+        '0x17aca915b237b04f873518947a1f440f0c1477a6ac79299b3be46858137d4bfb',
+        '0x2726c22ad3d9e23414887e8233ee83cc51603f58c48a9c9e33cb1f306d4365c0',
+        '0x08c5bd0f85cef2f8c3c1412a2b69ee943c6925ecf79798bb2b84e1b76d26871f',
+        '0x27f7c465045e0a4d8bec7c13e41d793734c50006ca08920732ce8c3096261435'
+      ]
+    ],
+    leavesIndices: [0],
+    nullifyingKey: '0x10723748ec5f3c372795b09ff836a01c2d8912dbdf326e675bd2cce508f85249',
+    npkOut: [
+      '0x2f7932a1cdf8f59676f69477a095b0eccf0863f7def1d7d9d0de0c3cb2db2f7a',
+      '0x10501d009bb1adc975a4f9de0ea9f2827cf033a51c807db6906debcc78eb5b5b'
+    ],
+    valueOut: ['1', '1']
+  },
+  {
+    merkleRoot: '0x1148d2b3e740c0518dd13e34d37cf333424629321fa01b80519b50d1b0df53da',
+    boundParamsHash: '0x10c9776c6464fc82f6ecb6ef4a203a4cbb540231e7e210d2f6768a84131be256',
+    nullifiers: [
+      '0x0cb00ae89c6dcfbc01de384c93348a6313b1209c2ce85dff03b3e5ac282938eb',
+      '0x1610a7d06554d1e274789a051fd9af036dd85095eee22dcb08d6b5630dcb86e1'
+    ],
+    commitmentsOut: [
+      '0x172e2881fe6c0a6efbdf3cb69a1b4813f79471cf9db112deea084f1a4ef94bd5',
+      '0x17387dddf80919ed14456d71f72d9a69bb712d62b5b140560c2ca09b845bb013'
+    ],
+    token: '0x0000000000000000000000000000000000000000000000000000000000000000',
+    publicKey: [
+      '0x080f578be453513415d4a378d5bb788b0032a2302827ade8e67b47c2a8a5305f',
+      '0x2b7fe941f0a28e383cfc43ab425d542dda68be4573e7d74e343f2361c9b1de9b'
+    ],
+    signature: [
+      '0x2f956354a049ff75687ccb33448c1f909fc346aeb6b49aaf9aa8317d5d0f39be',
+      '0x0556da858d623735bc12cdec6c92916183586d7587e66ee1cab7fe86caae7063',
+      '0x04ea2410abab266c0ce7c23b706b2832312aa02ed01a4f6e14d0effd740a16c6'
+    ],
+    randomIn: [
+      '0x000000000000000000000000000000001eb096daaf86af3f87812369b0f6b4da',
+      '0x000000000000000000000000000000008c6a44c9b5e4a5c8386251f1d84afdd3'
+    ],
+    valueIn: ['2', '2'],
+    pathElements: [
+      [
+        '0x1215152cb4bee33b557e355770a1724881f3e39660613d0cba1071ec3bb3627d',
+        '0x01c405064436affeae1fc8e30b2e417b4243bbb819adca3b55bb32efc3e43a4f',
+        '0x0888d37652d10d1781db54b70af87b42a2916e87118f507218f9a42a58e85ed2',
+        '0x183f531ead7217ebc316b4c02a2aad5ad87a1d56d4fb9ed81bf84f644549eaf5',
+        '0x093c48f1ecedf2baec231f0af848a57a76c6cf05b290a396707972e1defd17df',
+        '0x1437bb465994e0453357c17a676b9fdba554e215795ebc17ea5012770dfb77c7',
+        '0x12359ef9572912b49f44556b8bbbfa69318955352f54cfa35cb0f41309ed445a',
+        '0x2dc656dadc82cf7a4707786f4d682b0f130b6515f7927bde48214d37ec25a46c',
+        '0x2500bdfc1592791583acefd050bc439a87f1d8e8697eb773e8e69b44973e6fdc',
+        '0x244ae3b19397e842778b254cd15c037ed49190141b288ff10eb1390b34dc2c31',
+        '0x0ca2b107491c8ca6e5f7e22403ea8529c1e349a1057b8713e09ca9f5b9294d46',
+        '0x18593c75a9e42af27b5e5b56b99c4c6a5d7e7d6e362f00c8e3f69aeebce52313',
+        '0x17aca915b237b04f873518947a1f440f0c1477a6ac79299b3be46858137d4bfb',
+        '0x2726c22ad3d9e23414887e8233ee83cc51603f58c48a9c9e33cb1f306d4365c0',
+        '0x08c5bd0f85cef2f8c3c1412a2b69ee943c6925ecf79798bb2b84e1b76d26871f',
+        '0x27f7c465045e0a4d8bec7c13e41d793734c50006ca08920732ce8c3096261435'
+      ],
+      [
+        '0x0f4d8070b94028513c952d42fc9c8d51f8a0ca8e127c5ea2cbf82987ca830dd0',
+        '0x01c405064436affeae1fc8e30b2e417b4243bbb819adca3b55bb32efc3e43a4f',
+        '0x0888d37652d10d1781db54b70af87b42a2916e87118f507218f9a42a58e85ed2',
+        '0x183f531ead7217ebc316b4c02a2aad5ad87a1d56d4fb9ed81bf84f644549eaf5',
+        '0x093c48f1ecedf2baec231f0af848a57a76c6cf05b290a396707972e1defd17df',
+        '0x1437bb465994e0453357c17a676b9fdba554e215795ebc17ea5012770dfb77c7',
+        '0x12359ef9572912b49f44556b8bbbfa69318955352f54cfa35cb0f41309ed445a',
+        '0x2dc656dadc82cf7a4707786f4d682b0f130b6515f7927bde48214d37ec25a46c',
+        '0x2500bdfc1592791583acefd050bc439a87f1d8e8697eb773e8e69b44973e6fdc',
+        '0x244ae3b19397e842778b254cd15c037ed49190141b288ff10eb1390b34dc2c31',
+        '0x0ca2b107491c8ca6e5f7e22403ea8529c1e349a1057b8713e09ca9f5b9294d46',
+        '0x18593c75a9e42af27b5e5b56b99c4c6a5d7e7d6e362f00c8e3f69aeebce52313',
+        '0x17aca915b237b04f873518947a1f440f0c1477a6ac79299b3be46858137d4bfb',
+        '0x2726c22ad3d9e23414887e8233ee83cc51603f58c48a9c9e33cb1f306d4365c0',
+        '0x08c5bd0f85cef2f8c3c1412a2b69ee943c6925ecf79798bb2b84e1b76d26871f',
+        '0x27f7c465045e0a4d8bec7c13e41d793734c50006ca08920732ce8c3096261435'
+      ]
+    ],
+    leavesIndices: [0, 1],
+    nullifyingKey: '0x2cc5f0087c10d9ca4de9c258bd54c5e5d4de3618cdf11c7daaa0f9bad1a57cb3',
+    npkOut: [
+      '0x1a3587a6901fef437c8257907ff469f8105e532b7844057ef177ac4a38e0a328',
+      '0x2904944d9042b2eabdd1a0848524b4a5b7c576a94f5109caca36422d4b0659ab'
+    ],
+    valueOut: ['2', '2']
+  }
+]
+
+export const standardPublicInputs: PublicInputs[] = [
+]
+
+export const testVectors: TestVector[] = [
   {
     artifacts: artifacts1x2,
     inputs:
