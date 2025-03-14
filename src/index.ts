@@ -1,24 +1,26 @@
-import { groth16 } from 'snarkjs'
-import { snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSVKey } from './formatter'
-import { CircuitInputs, ProverArtifacts, Proof, VerifyingKey, PublicInputs } from './types'
+import { groth16, VKey } from 'snarkjs'
+import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof } from './formatter'
+import { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
 
-export type { CircuitInputs, ProverArtifacts, Proof, VerifyingKey, PublicInputs } from './types'
+export type { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
 /**
  * Create a Railgun transaction proof
  * @param circuitInputs - Circuit inputs for generating proof
  * @param artifacts - Circuit artifacts
  * @returns Proof
  */
-export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArtifacts): Promise<Proof> {
+export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArtifacts): Promise<{ proof: Proof, publicInputs: PublicInputs }> {
   // Format the inputs into snarkJS format
   const snarkJSFormattedInputs = standardToSnarkJSInput(circuitInputs)
 
   // Generate proof
-  // @TODO also return public inputs
   const { proof } = await groth16.fullProve(snarkJSFormattedInputs, artifacts.wasm, artifacts.zkey)
 
+  // Standardize the proof
+  const standardProof = snarkJSToStandardProof(proof)
+
   // Format to Uint8Array and return
-  return snarkJSToStandardProof(proof)
+  return { proof: standardProof, publicInputs: extractPublicInputsFromCircuitInputs(circuitInputs, standardProof) }
 }
 
 /**
@@ -28,11 +30,10 @@ export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArti
  * @param proof - Snark proof
  * @returns is proof valid
  */
-export function verify (vkey: VerifyingKey, publicInputs: PublicInputs, proof: Proof) {
+export function verify (vkey: VKey, publicInputs: PublicInputs, proof: Proof): Promise<boolean> {
   // Convert to snarkjs format
-  const snarkJSFormattedVkey = standardToSnarkJSVKey(vkey)
   const snarkJSFormattedProof = standardToSnarkJSProof(proof)
 
   // verify and return
-  return groth16.verify(snarkJSFormattedVkey, publicInputs, snarkJSFormattedProof)
+  return groth16.verify(vkey, publicInputs, snarkJSFormattedProof)
 }

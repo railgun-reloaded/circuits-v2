@@ -9,17 +9,27 @@ const zkey2x2 = fs.readFileSync(path.resolve(__dirname, './test-artifacts/2x2_zk
 const wasm1x2 = fs.readFileSync(path.resolve(__dirname, './test-artifacts/1x2.wasm'))
 const wasm2x2 = fs.readFileSync(path.resolve(__dirname, './test-artifacts/2x2.wasm'))
 
+// Typecast artifacts since we only use groth16 bn128
+const artifacts1x2 = {
+  vkey: vkey1x2,
+  zkey: zkey1x2,
+  wasm: wasm1x2
+} as ProverArtifacts
+
+// Typecast artifacts since we only use groth16 bn128
+const artifacts2x2 = {
+  vkey: vkey2x2,
+  zkey: zkey2x2,
+  wasm: wasm2x2
+} as ProverArtifacts
+
 export const testVectors: {
   artifacts: ProverArtifacts,
   inputs: CircuitInputs,
   proof: unknown,
 }[] = [
   {
-    artifacts: {
-      vkey: vkey1x2,
-      zkey: zkey1x2,
-      wasm: wasm1x2
-    },
+    artifacts: artifacts1x2,
     inputs:
       {
         merkleRoot: new Uint8Array([20, 164, 244, 0, 17, 153, 176, 95, 165, 227, 189, 76, 169, 189, 25, 16, 132, 200, 145, 254, 172, 153, 190, 121, 39, 44, 221, 103, 29, 82, 117, 184]),
@@ -88,11 +98,7 @@ export const testVectors: {
     },
   },
   {
-    artifacts: {
-      vkey: vkey2x2,
-      zkey: zkey2x2,
-      wasm: wasm2x2
-    },
+    artifacts: artifacts2x2,
     inputs: {
       merkleRoot: new Uint8Array([17, 72, 210, 179, 231, 64, 192, 81, 141, 209, 62, 52, 211, 124, 243, 51, 66, 70, 41, 50, 31, 160, 27, 128, 81, 155, 80, 209, 176, 223, 83, 218]),
       boundParamsHash: new Uint8Array([16, 201, 119, 108, 100, 100, 252, 130, 246, 236, 182, 239, 74, 32, 58, 76, 187, 84, 2, 49, 231, 226, 16, 210, 246, 118, 138, 132, 19, 27, 226, 86]),

@@ -47,8 +47,8 @@ export type SnarkJSCircuitInputFormat = {
  */
 export type ProverArtifacts = {
   vkey: {
-    protocol: string,
-    curve: string,
+    protocol: 'groth16',
+    curve: 'bn128',
     nPublic: number,
     vk_alpha_1: string[],
     vk_beta_2: string[][],
@@ -61,12 +61,16 @@ export type ProverArtifacts = {
   wasm: Uint8Array
 }
 
-export interface PublicInputs {
+/**
+ * PublicInputs for verifying, returned by prove()
+ * NOTE: PublicInputs is the same as PublicSignals
+ */
+export type PublicInputs = {
   proof: Proof;
   merkleRoot: Uint8Array;
   nullifiers: Uint8Array[];
   commitments: Uint8Array[];
-  boundParams: Uint8Array;
+  boundParams: Uint8Array; // Return a hash; interface is not important to circuit interaction
 }
 
 export type Proof = {
@@ -82,14 +86,4 @@ export type Proof = {
     x: Uint8Array;
     y: Uint8Array;
   };
-}
-
-export interface VerifyingKey {
-  nPublic: number;
-  vk_alpha_1: Uint8Array[];
-  vk_beta_2: Uint8Array[][];
-  vk_gamma_2: Uint8Array[][];
-  vk_delta_2: Uint8Array[][];
-  vk_alphabeta_12: Uint8Array[][];
-  IC: Uint8Array[][];
 }

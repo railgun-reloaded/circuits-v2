@@ -1,9 +1,9 @@
 import test from 'brittle'
 import { testVectors } from './test-vectors'
-import { prove } from '../src/index'
+import { prove, verify } from '../src/index'
 
 test('Should prove', async function (assert) {
-  // Test 1x2
+  // Test with each circuit size (ex. 1x2, 2x2 etc.)
   for (const vector of testVectors) {
     assert.execution(await prove(vector.inputs, vector.artifacts))
   }
@@ -11,7 +11,15 @@ test('Should prove', async function (assert) {
   assert.pass()
 })
 
-test('Should verify', function (assert) {
-  // Test 1x2
+test('Should prove and verify, using PublicSignals returned from prove', async function (assert) {
+  // Test with each circuit size (ex. 1x2, 2x2 etc.)
+  for (const vector of testVectors) {
+    // Prove the test vectors
+    const { proof, publicInputs } = await prove(vector.inputs, vector.artifacts)
+
+    // Verify the proofs
+    assert.ok(await verify(vector.artifacts.vkey, publicInputs, proof))
+  }
+
   assert.pass()
 })
