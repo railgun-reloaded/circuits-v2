@@ -1,7 +1,7 @@
 import test from 'brittle'
-import { snarkJsCircuitInputs, snarkJsProofs, standardProofs, testVectors } from './test-vectors'
+import { snarkJsCircuitInputs, snarkJsProofs, snarkJsPublicInputs, standardProofs, standardPublicInputs, testVectors } from './test-vectors'
 import { prove, verify } from '../src/index'
-import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof } from '../src/formatter'
+import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from '../src/formatter'
 
 test('Should prove', async function (assert) {
   // Test with each circuit size (ex. 1x2, 2x2 etc.)
@@ -56,17 +56,22 @@ test('Should ensure formatting is correct for CircuitInputs', async function (as
 })
 
 test('Should ensure formatting is correct for PublicInputs', async function (assert) {
-  // get public inputs and ensure formatting to snakrjs format
-  assert.pass()
+  // standardToSnarkJSPublicInputs
+  standardPublicInputs.forEach((standardPublicInput, i) => {
+    // Format a standard PublicInputs to snarkJs format
+    const returnedStringArray = standardToSnarkJSPublicInputs(standardPublicInput)
+
+    assert.alike(returnedStringArray, snarkJsPublicInputs[i])
+  })
 })
 
-test.solo('Should ensure formatting is correct for extracted PublicInputs', async function (assert) {
+test('Should ensure formatting is correct for extracted PublicInputs', async function (assert) {
   // For each circuit
   testVectors.forEach((testVector, i) => {
     // Extract PublicInputs from existing CircuitInputs
     const returnedPublicInputs = extractPublicInputsFromCircuitInputs(testVector.inputs, testVector.proof)
 
     // Ensure the formatted public inputs are correct
-    assert.alike(returnedPublicInputs, snarkJsCircuitInputs[i])
+    assert.alike(returnedPublicInputs, standardPublicInputs[i])
   })
 })
