@@ -16,7 +16,7 @@
   "main": "src/index.js",
   "scripts": {
     "pretest": "npm run build",
-    "test": "node --enable-source-maps test/index.test.js",
+    "test": "NODE_OPTIONS=--enable-source-maps brittle --coverage test/**/*.js",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "build": "tsc --build",
