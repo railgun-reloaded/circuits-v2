@@ -1,4 +1,4 @@
-import test from 'brittle'
+import { test } from 'brittle'
 import { snarkJsCircuitInputs, snarkJsProofs, snarkJsPublicInputs, standardProofs, standardPublicInputs, testVectors } from './test-vectors'
 import { prove, verify } from '../src/index'
 import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from '../src/formatter'

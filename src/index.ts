@@ -3,6 +3,7 @@ import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardT
 import { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
 
 export type { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
+
 /**
  * Create a Railgun transaction proof
  * @param circuitInputs - Circuit inputs for generating proof
@@ -19,8 +20,17 @@ export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArti
   // Standardize the proof
   const standardProof = snarkJSToStandardProof(proof)
 
+  // Extract public inputs
+  const snarkJSFormattedPublicInputs = extractPublicInputsFromCircuitInputs(circuitInputs, standardProof)
+
+  // Create snarkJS proof
+  const snarkJSFormattedProof = standardToSnarkJSProof(standardProof)
+
+  // Ensure proof passes verification
+  groth16.verify(artifacts.vkey, snarkJSFormattedPublicInputs, snarkJSFormattedProof)
+
   // Format to Uint8Array and return
-  return { proof: standardProof, publicInputs: extractPublicInputsFromCircuitInputs(circuitInputs, standardProof) }
+  return { proof: standardProof, publicInputs: snarkJSFormattedPublicInputs }
 }
 
 /**
