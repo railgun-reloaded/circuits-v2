@@ -1,4 +1,4 @@
-import { groth16, VKey } from 'snarkjs'
+import { groth16, VKey, curves } from 'snarkjs'
 import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from './formatter'
 import { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
 
@@ -47,4 +47,20 @@ export function verify (vkey: VKey, publicInputs: PublicInputs, proof: Proof): P
 
   // verify and return
   return groth16.verify(vkey, snarkJSFormattedPublicInputs, snarkJSFormattedProof)
+}
+
+/**
+ * Cleanup snarkJS resources
+ *
+ * @return Promise<void>
+ *
+ * https://github.com/iden3/snarkjs/issues/152
+ * https://github.com/iden3/snarkjs/issues/393
+ */
+export async function cleanupSnarkJS (): Promise<void> {
+  // Initialize the curve object controlling wasm threads
+  const curve = await curves.getCurveFromName('bn128')
+
+  // Terminate threads
+  curve.terminate()
 }

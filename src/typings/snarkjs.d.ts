@@ -37,4 +37,14 @@ declare module 'snarkjs' {
       logger?: unknown,
     ): Promise<boolean>
   }
+
+  export interface Curve {
+    terminate: () => Promise<void>;
+  }
+
+  namespace curves {
+    declare function getCurveFromName (name: string, options?: CurveOptions): Promise<Curve>
+  }
+
+  export type Curves = 'bn128'
 }

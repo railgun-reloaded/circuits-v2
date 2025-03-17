@@ -1,6 +1,6 @@
-import { test } from 'brittle'
+import { hook, test } from 'brittle'
 import { snarkJsCircuitInputs, snarkJsProofs, snarkJsPublicInputs, standardProofs, standardPublicInputs, testVectors } from './test-vectors'
-import { prove, verify } from '../src/index'
+import { cleanupSnarkJS, prove, verify } from '../src/index'
 import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from '../src/formatter'
 
 test('Should prove', async function (assert) {
@@ -9,9 +9,6 @@ test('Should prove', async function (assert) {
     // Prove the inputs, which will throw an error if it fails
     assert.execution(await prove(vector.inputs, vector.artifacts), `Circuit Size ${vector.inputs.inputTXOs.length}x${vector.inputs.outputTXOs.length}`)
   }
-  // @ts-expect-error https://github.com/iden3/snarkjs/issues/152
-  // https://github.com/iden3/snarkjs/issues/393
-  await globalThis.curve_bn128.terminate()
 })
 
 test('Should prove and verify, using publicSignals returned from prove', async function (assert) {
@@ -23,9 +20,6 @@ test('Should prove and verify, using publicSignals returned from prove', async f
     // Verify the proofs, which returns a boolean
     assert.ok(await verify(vector.artifacts.vkey, publicInputs, proof), `Circuit Size ${vector.inputs.inputTXOs.length}x${vector.inputs.outputTXOs.length}`)
   }
-  // @ts-expect-error https://github.com/iden3/snarkjs/issues/152
-  // https://github.com/iden3/snarkjs/issues/393
-  await globalThis.curve_bn128.terminate()
 })
 
 test('Should ensure formatting is correct for SnarkjsProof', async function (assert) {
@@ -34,7 +28,7 @@ test('Should ensure formatting is correct for SnarkjsProof', async function (ass
     // Format a snarkJs proof to standard format
     const returnedStandardProof = snarkJSToStandardProof(snarkJsProof)
 
-    // Ensure the formatted proof is correct
+    // Ensure the formatted proof is corrects
     assert.alike(returnedStandardProof, standardProofs[i])
   })
 })
@@ -80,4 +74,9 @@ test('Should ensure formatting is correct for extracted PublicInputs', async fun
     // Ensure the formatted public inputs are correct
     assert.alike(returnedPublicInputs, standardPublicInputs[i])
   })
+})
+
+hook('Cleanup snarkJS', async function () {
+  // Cleanup snarkJS curve that snarkJS leaves open from ffjavascript by default
+  await cleanupSnarkJS()
 })
