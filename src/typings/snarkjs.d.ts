@@ -29,6 +29,8 @@ declare module 'snarkjs' {
       wasm: Uint8Array,
       zkey: Uint8Array,
       logger?: unknown,
+      wtnsCalcOptions?: any,
+      proverOptions?: { singleThread?: boolean },
     ): Promise<SNARK>
     declare function verify (
       vkVerifier: VKey,
