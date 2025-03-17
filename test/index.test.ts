@@ -9,6 +9,9 @@ test('Should prove', async function (assert) {
     // Prove the inputs, which will throw an error if it fails
     assert.execution(await prove(vector.inputs, vector.artifacts), `Circuit Size ${vector.inputs.inputTXOs.length}x${vector.inputs.outputTXOs.length}`)
   }
+  // @ts-expect-error https://github.com/iden3/snarkjs/issues/152
+  // https://github.com/iden3/snarkjs/issues/393
+  await globalThis.curve_bn128.terminate()
 })
 
 test('Should prove and verify, using publicSignals returned from prove', async function (assert) {
@@ -20,6 +23,9 @@ test('Should prove and verify, using publicSignals returned from prove', async f
     // Verify the proofs, which returns a boolean
     assert.ok(await verify(vector.artifacts.vkey, publicInputs, proof), `Circuit Size ${vector.inputs.inputTXOs.length}x${vector.inputs.outputTXOs.length}`)
   }
+  // @ts-expect-error https://github.com/iden3/snarkjs/issues/152
+  // https://github.com/iden3/snarkjs/issues/393
+  await globalThis.curve_bn128.terminate()
 })
 
 test('Should ensure formatting is correct for SnarkjsProof', async function (assert) {
