@@ -1,4 +1,5 @@
 {
   "extends": ["@railgun-reloaded/tsconfig/tsconfig"],
   "include": ["src/**/*.ts", "test/**/*.ts"],
+  "compilerOptions": { "resolveJsonModule": true }
 }

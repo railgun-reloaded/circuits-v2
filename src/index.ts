@@ -40,7 +40,7 @@ export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArti
  * @param proof - Snark proof
  * @returns is proof valid
  */
-export function verify (vkey: VKey, publicInputs: PublicInputs, proof: Proof): Promise<boolean> {
+export function verify (publicInputs: PublicInputs, proof: Proof, vkey: VKey): Promise<boolean> {
   // Convert to snarkjs format
   const snarkJSFormattedProof = standardToSnarkJSProof(proof)
   const snarkJSFormattedPublicInputs = standardToSnarkJSPublicInputs(publicInputs)
