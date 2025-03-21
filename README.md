@@ -3,7 +3,7 @@
 > Typescript module for generating and verifying the transact proof required by Railgun. 
 
 ## Example Usage
-```ts
+```typescript
   import {prove, verify} from '@railgun-reloaded/circuits-v2';
 
   // Generate proof 
@@ -16,7 +16,8 @@
 ```
 
 ## Install
-```sh
+
+```bash
 npm install @railgun-reloaded/circuits-v2
 ```
 
@@ -32,13 +33,13 @@ If you have the params required to call `prove()`, you also have all of the para
 To generate inputs for calling `prove()` (other than the existing testVectors in `./test/test-vectors.ts`), refer to the methods used `./test/index.test.ts`
 for importing `testVectors`. 
 
-### `circuitInputs` can be retreived from the [contract](https://github.com/Railgun-Privacy/contract) repo through the following steps:
+### `circuitInputs` can be retrieved from the [contract](https://github.com/Railgun-Privacy/contract) repo through the following steps:
 
-1. Edit [`circuitList` in `artifacts.ts`](https://github.com/Railgun-Privacy/contract/blob/612b9687eae8c94d34bf09291ec35f1d8eea1ed2/helpers/logic/artifacts.ts#L43) to include the circuit(s) you want to generate inputs for
+#### 1. Edit [`circuitList` in `artifacts.ts`](https://github.com/Railgun-Privacy/contract/blob/612b9687eae8c94d34bf09291ec35f1d8eea1ed2/helpers/logic/artifacts.ts#L43) to include the circuit(s) you want to generate inputs for
 
 For example, this will generate circuits for 1x2 and 2x2: 
 
-```
+```typescript
 const circuitList = [
   {
     nullifiers: 1,
@@ -51,12 +52,12 @@ const circuitList = [
 ];
 ```
 
-2. In [`transaction.ts`](https://github.com/Railgun-Privacy/contract/blob/612b9687eae8c94d34bf09291ec35f1d8eea1ed2/helpers/logic/transaction.ts#L543), 
+#### 2. In [`transaction.ts`](https://github.com/Railgun-Privacy/contract/blob/612b9687eae8c94d34bf09291ec35f1d8eea1ed2/helpers/logic/transaction.ts#L543), 
 right after the call to `prove()`, add some logs to print the inputs needed for forming new test vectors. 
 
 For example, this will log `circuitInputs` for `prove()`:
 
-```
+```typescript
 console.log('\ninputs: ', JSON.stringify(inputs, (_, v: unknown) => {
   if (typeof v === 'bigint') return [...bigIntToArray(v, 32)];
   if (v instanceof Uint8Array) return [...v];
@@ -67,41 +68,63 @@ console.log('\ninputs: ', JSON.stringify(inputs, (_, v: unknown) => {
 }));
 ```
 
-3. Run a test that triggers the logging of inputs in step 2. 
+Optional: The proof could also be logged, but will require some additional formatting to be used in `testVectors`.
+It is easier to log the `Proof` object returned from calling `prove()`, only requiring the `circuitInputs` and `artifacts` params. 
+See the note in `./src/formatter.ts/snarkJSToStandardProof()` for the necessary formatting.
+
+```typescript
+console.log('\nproof: ', JSON.stringify(proof.solidity, (_, v: unknown) => {
+  if (typeof v === 'bigint') return [...bigIntToArray(v, 32)];
+  if (v instanceof Uint8Array) return [...v];
+  try {
+  if (typeof v == 'string') return bigIntToArray(BigInt(v), 32);
+} catch (e) {}
+  return v;
+}));
+```
+
+```typescript
+console.log('\nproofSnarkJS: ', JSON.stringify(proof.solidity, (_, v: unknown) => {
+  if (typeof v === 'bigint') return v.toString();
+  else return v;
+}));
+```
+
+#### 3. Run a test that triggers the logging of inputs in step 2. 
 
 For example, in [`verifier.ts`](https://github.com/Railgun-Privacy/contract/blob/612b9687eae8c94d34bf09291ec35f1d8eea1ed2/test/logic/verifier.ts#L178), 
 we can add a `.only` to get the inputs we need:
 
-```
+```typescript
 it.only('Should verify proofs', async function () {
 ```
 
 Followed by 
 
-```
+```bash
 yarn test
 ```
 
-4. Format the retreived test vectors. 
+#### 4. Format the retrieved test vectors. 
 
 See `testVectors` in `./test/test-vectors.ts` for the necessary `inputs` reformatting using `new Uint8Array()`. 
 
 
-### `artifacts` can be retreived from the [IPFS host](https://ipfs.io/ipfs/QmeBrG7pii1qTqsn7rusvDiqXopHPjCT9gR4PsmW7wXqZq/) for different circuit sizes. 
+### `artifacts` can be retrieved from the [IPFS host](https://ipfs.io/ipfs/QmeBrG7pii1qTqsn7rusvDiqXopHPjCT9gR4PsmW7wXqZq/) for different circuit sizes. 
 
-1. Choose a circuit size and download the `vkey.json` and `zkey` for a `ProverArtifacts` object, found in `./src/types.ts`. 
+####  1. Choose a circuit size and download the `vkey.json` and `zkey` for a `ProverArtifacts` object, found in `./src/types.ts`. 
 
 For example, `1x1`
 
-2. Download the relating `.wasm` file found in the [`prover/snarkjs`](https://ipfs.io/ipfs/QmeBrG7pii1qTqsn7rusvDiqXopHPjCT9gR4PsmW7wXqZq/prover/snarkjs/) folder. 
+#### 2. Download the relating `.wasm` file found in the [`prover/snarkjs`](https://ipfs.io/ipfs/QmeBrG7pii1qTqsn7rusvDiqXopHPjCT9gR4PsmW7wXqZq/prover/snarkjs/) folder. 
 
 For example, `1x1.wasm`
 
-3. Paste the chosen circuits' `vkey.json`, `zkey`, and `.wasm` file in the `./test/test-artifacts` folder. 
+#### 3. Paste the chosen circuits' `vkey.json`, `zkey`, and `.wasm` file in the `./test/test-artifacts` folder. 
 
-4. Create the new `testVectors` object in `./test/test-vectors.ts`
+#### 4. Create the new `testVectors` object in `./test/test-vectors.ts`
 
-5. Run a test on `prove()` that will return the generated `Proof` and `publicInputs` values. 
+#### 5. Run a test on `prove()` that will return the generated `Proof` and `publicInputs` values. 
 
 For example, in `./test/index.test.ts`:
 
@@ -109,7 +132,7 @@ For example, in `./test/index.test.ts`:
 test.only('Should prove',
 ```
 
-6. Copy the `proof` value from the test output and paste them into the `testVectors` object in `./test/test-vectors.ts`
+#### 6. Copy the `proof` value from the test output and paste them into the `testVectors` object in `./test/test-vectors.ts`
 
 You now have newly generated test vectors for the chosen circuit size. 
 
