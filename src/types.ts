@@ -63,7 +63,7 @@ type ProverArtifacts = {
 
 /**
  * PublicInputs for verifying, returned by prove()
- * NOTE: PublicInputs is the same as PublicSignals
+ * NOTE: PublicInputs is the same as snarkJS.fullProve.PublicSignals
  */
 type PublicInputs = {
   proof: Proof;
