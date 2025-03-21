@@ -1,5 +1,3 @@
-// TODO what docs? where to get the inputs from in railgun?
-
 # `@railgun-reloaded/circuits-v2`
 
 > Prover / Verifier for Railgun transaction circuit v2
