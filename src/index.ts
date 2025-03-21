@@ -6,8 +6,9 @@ import type { CircuitInputs, Proof, ProverArtifacts, PublicInputs } from './type
 
 /**
  * Create a Railgun transaction proof
+ *
  * @param circuitInputs - Circuit inputs for generating proof
- * @param artifacts - Circuit artifacts
+ * @param artifacts - Circuit artifacts, for ex. 1x2_zkey, 1x2.wasm, 1x2.vkey.json
  * @returns Proof
  */
 async function prove (circuitInputs: CircuitInputs, artifacts: ProverArtifacts): Promise<{ proof: Proof, publicInputs: PublicInputs }> {
@@ -27,6 +28,7 @@ async function prove (circuitInputs: CircuitInputs, artifacts: ProverArtifacts):
   const snarkJSFormattedProof = standardToSnarkJSProof(standardProof)
 
   // Ensure proof passes verification
+  // NOTE: snarkJS can generate a proof for invalid inputs, so we must verify it before sending to the contract
   groth16.verify(artifacts.vkey, snarkJSFormattedPublicInputs, snarkJSFormattedProof)
 
   // Format to Uint8Array and return
@@ -35,17 +37,18 @@ async function prove (circuitInputs: CircuitInputs, artifacts: ProverArtifacts):
 
 /**
  * Verify a Railgun transaction proof
+ *
  * @param vkey - Circuit verifying key
  * @param publicInputs - Proof public inputs
  * @param proof - Snark proof
  * @returns is proof valid
  */
-function verify (publicInputs: PublicInputs, proof: Proof, vkey: VKey): Promise<boolean> {
-  // Convert to snarkjs format
+export function verify (publicInputs: PublicInputs, proof: Proof, vkey: VKey): Promise<boolean> {
+  // Convert standard proof to snarkJS format
   const snarkJSFormattedProof = standardToSnarkJSProof(proof)
   const snarkJSFormattedPublicInputs = standardToSnarkJSPublicInputs(publicInputs)
 
-  // verify and return
+  // Verify the proof and return result
   return groth16.verify(vkey, snarkJSFormattedPublicInputs, snarkJSFormattedProof)
 }
 

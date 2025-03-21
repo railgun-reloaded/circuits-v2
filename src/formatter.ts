@@ -36,6 +36,7 @@ function snarkJSToStandardProof (proof: SnarkjsProof): Proof {
   return {
     a: { x: numberStringToUint8Array(proof.pi_a[0], 32), y: numberStringToUint8Array(proof.pi_a[1], 32) },
     b: {
+      // NOTE: snarkJS returns the elements of x and y in reverse order, so we must reverse them back
       x: [numberStringToUint8Array(proof.pi_b[0][1], 32), numberStringToUint8Array(proof.pi_b[0][0], 32)],
       y: [numberStringToUint8Array(proof.pi_b[1][1], 32), numberStringToUint8Array(proof.pi_b[1][0], 32)],
     },
