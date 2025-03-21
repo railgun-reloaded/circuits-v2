@@ -1,6 +1,6 @@
 # `@railgun-reloaded/circuits-v2`
 
-> Prover / Verifier for Railgun transaction circuit v2
+> Typescript module for generating and verifying the transact proof required by Railgun. 
 
 ## Example Usage
 ```ts
