@@ -23,11 +23,11 @@
     "clean": "tsc --build --clean"
   },
   "devDependencies": {
+    "@railgun-reloaded/eslint-config": "^1.0.0",
     "@railgun-reloaded/tsconfig": "^1.1.0",
     "@types/node": "^22.13.10",
     "brittle": "^3.12.2",
     "eslint": "^9.22.0",
-    "neostandard": "^0.12.1",
     "typescript": "^5.8.2"
   },
   "dependencies": {

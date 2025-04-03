@@ -1,13 +1,14 @@
-import { CircuitInputs, Proof, PublicInputs, SnarkJSCircuitInputFormat } from './types'
+import type { SnarkjsProof } from 'snarkjs'
+
 import { numberStringToUint8Array, uint8ArrayToHexString, uint8ArrayToNumberString } from './bytes'
-import { SnarkjsProof } from 'snarkjs'
+import type { CircuitInputs, Proof, PublicInputs, SnarkJSCircuitInputFormat } from './types'
 
 /**
  * Convert inputs to snarkJS format
  * @param circuitInputs - Circuit inputs to format
  * @returns Formatted snarkJS inputs
  */
-export function standardToSnarkJSInput (circuitInputs: CircuitInputs): SnarkJSCircuitInputFormat {
+function standardToSnarkJSInput (circuitInputs: CircuitInputs): SnarkJSCircuitInputFormat {
   return {
     merkleRoot: uint8ArrayToHexString(circuitInputs.merkleRoot),
     boundParamsHash: uint8ArrayToHexString(circuitInputs.boundParamsHash),
@@ -31,7 +32,7 @@ export function standardToSnarkJSInput (circuitInputs: CircuitInputs): SnarkJSCi
  * @param proof - Proof inputs to format
  * @returns Formatted standard proof
  */
-export function snarkJSToStandardProof (proof: SnarkjsProof): Proof {
+function snarkJSToStandardProof (proof: SnarkjsProof): Proof {
   return {
     a: { x: numberStringToUint8Array(proof.pi_a[0], 32), y: numberStringToUint8Array(proof.pi_a[1], 32) },
     b: {
@@ -45,9 +46,10 @@ export function snarkJSToStandardProof (proof: SnarkjsProof): Proof {
 /**
  * Extract PublicInputs from CircuitInputs to be used in verify() after a prove() call
  * @param circuitInputs - CircuitInputs
+ * @param proof - Standard Proof
  * @returns Formatted PublicInputs to be used in verify()
  */
-export function extractPublicInputsFromCircuitInputs (circuitInputs: CircuitInputs, proof: Proof): PublicInputs {
+function extractPublicInputsFromCircuitInputs (circuitInputs: CircuitInputs, proof: Proof): PublicInputs {
   return {
     proof,
     merkleRoot: circuitInputs.merkleRoot,
@@ -62,7 +64,7 @@ export function extractPublicInputsFromCircuitInputs (circuitInputs: CircuitInpu
  * @param proof - Proof inputs to format
  * @returns Formatted snarkJS proof
  */
-export function standardToSnarkJSProof (proof: Proof): SnarkjsProof {
+function standardToSnarkJSProof (proof: Proof): SnarkjsProof {
   return {
     protocol: 'groth16',
     pi_a: [uint8ArrayToNumberString(proof.a.x), uint8ArrayToNumberString(proof.a.y)],
@@ -78,7 +80,7 @@ export function standardToSnarkJSProof (proof: Proof): SnarkjsProof {
  * @param publicInputs - Public inputs to format
  * @returns - Formatted snarkJS public inputs
  */
-export function standardToSnarkJSPublicInputs (publicInputs: PublicInputs) : string[] {
+function standardToSnarkJSPublicInputs (publicInputs: PublicInputs) : string[] {
   return [
     uint8ArrayToNumberString(publicInputs.merkleRoot),
     uint8ArrayToNumberString(publicInputs.boundParams),
@@ -86,3 +88,5 @@ export function standardToSnarkJSPublicInputs (publicInputs: PublicInputs) : str
     ...publicInputs.commitments.map(uint8ArrayToNumberString)
   ]
 }
+
+export { standardToSnarkJSInput, snarkJSToStandardProof, extractPublicInputsFromCircuitInputs, standardToSnarkJSProof, standardToSnarkJSPublicInputs }

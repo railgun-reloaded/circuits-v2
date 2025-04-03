@@ -1,7 +1,7 @@
 /**
  * Standard representation of circuit inputs
  */
-export type CircuitInputs = {
+type CircuitInputs = {
   merkleRoot: Uint8Array,
   boundParamsHash: Uint8Array,
   token: Uint8Array,
@@ -25,7 +25,7 @@ export type CircuitInputs = {
 /**
  * SnarkJS representation of circuit inputs
  */
-export type SnarkJSCircuitInputFormat = {
+type SnarkJSCircuitInputFormat = {
   merkleRoot: string,
   boundParamsHash: string,
   nullifiers: string[],
@@ -45,7 +45,7 @@ export type SnarkJSCircuitInputFormat = {
 /**
  * Generated circuit artifacts
  */
-export type ProverArtifacts = {
+type ProverArtifacts = {
   vkey: {
     protocol: 'groth16',
     curve: 'bn128',
@@ -65,7 +65,7 @@ export type ProverArtifacts = {
  * PublicInputs for verifying, returned by prove()
  * NOTE: PublicInputs is the same as PublicSignals
  */
-export type PublicInputs = {
+type PublicInputs = {
   proof: Proof;
   merkleRoot: Uint8Array;
   nullifiers: Uint8Array[];
@@ -73,7 +73,7 @@ export type PublicInputs = {
   boundParams: Uint8Array; // Return a hash; interface is not important to circuit interaction
 }
 
-export type Proof = {
+type Proof = {
   a: {
     x: Uint8Array;
     y: Uint8Array;
@@ -87,3 +87,5 @@ export type Proof = {
     y: Uint8Array;
   };
 }
+
+export type { CircuitInputs, SnarkJSCircuitInputFormat, ProverArtifacts, PublicInputs, Proof }

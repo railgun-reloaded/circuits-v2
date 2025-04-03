@@ -1,17 +1,17 @@
 declare module 'snarkjs' {
-  export interface SnarkjsProof {
+  interface SnarkjsProof {
     pi_a: [string, string];
     pi_b: [[string, string], [string, string]];
     pi_c: [string, string];
     protocol: 'groth16';
   }
 
-  export interface SNARK {
+  interface SNARK {
     proof: SnarkjsProof;
     publicSignals: PublicSignals;
   }
 
-  export interface VKey {
+  interface VKey {
     protocol: 'groth16';
     curve: Curves;
     nPublic: number;
@@ -40,7 +40,7 @@ declare module 'snarkjs' {
     ): Promise<boolean>
   }
 
-  export interface Curve {
+  interface Curve {
     terminate: () => Promise<void>;
   }
 
@@ -48,5 +48,8 @@ declare module 'snarkjs' {
     declare function getCurveFromName (name: string, options?: CurveOptions): Promise<Curve>
   }
 
-  export type Curves = 'bn128'
+  type Curves = 'bn128'
+
+  export type { SnarkjsProof, SNARK, VKey, Curves }
+  export { groth16, curves }
 }

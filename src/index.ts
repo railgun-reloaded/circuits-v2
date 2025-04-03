@@ -1,8 +1,8 @@
-import { groth16, VKey, curves } from 'snarkjs'
-import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from './formatter'
-import { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
+import type { VKey } from 'snarkjs'
+import { curves, groth16 } from 'snarkjs'
 
-export type { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
+import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from './formatter'
+import type { CircuitInputs, Proof, ProverArtifacts, PublicInputs } from './types'
 
 /**
  * Create a Railgun transaction proof
@@ -10,7 +10,7 @@ export type { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './type
  * @param artifacts - Circuit artifacts
  * @returns Proof
  */
-export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArtifacts): Promise<{ proof: Proof, publicInputs: PublicInputs }> {
+async function prove (circuitInputs: CircuitInputs, artifacts: ProverArtifacts): Promise<{ proof: Proof, publicInputs: PublicInputs }> {
   // Format the inputs into snarkJS format
   const snarkJSFormattedInputs = standardToSnarkJSInput(circuitInputs)
 
@@ -40,7 +40,7 @@ export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArti
  * @param proof - Snark proof
  * @returns is proof valid
  */
-export function verify (vkey: VKey, publicInputs: PublicInputs, proof: Proof): Promise<boolean> {
+function verify (vkey: VKey, publicInputs: PublicInputs, proof: Proof): Promise<boolean> {
   // Convert to snarkjs format
   const snarkJSFormattedProof = standardToSnarkJSProof(proof)
   const snarkJSFormattedPublicInputs = standardToSnarkJSPublicInputs(publicInputs)
@@ -51,16 +51,18 @@ export function verify (vkey: VKey, publicInputs: PublicInputs, proof: Proof): P
 
 /**
  * Cleanup snarkJS resources
- *
- * @return Promise<void>
+ * @returns Promise<void>
  *
  * https://github.com/iden3/snarkjs/issues/152
  * https://github.com/iden3/snarkjs/issues/393
  */
-export async function cleanupSnarkJS (): Promise<void> {
+async function cleanupSnarkJS (): Promise<void> {
   // Initialize the curve object controlling wasm threads
   const curve = await curves.getCurveFromName('bn128')
 
   // Terminate threads
   curve.terminate()
 }
+
+export type { CircuitInputs, ProverArtifacts, Proof, PublicInputs } from './types'
+export { prove, verify, cleanupSnarkJS }

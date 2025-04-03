@@ -1,9 +1,9 @@
 /**
  * Convert a Uint8Array to a 32 byte hex string
- * @param - Uint8Array representation of hex string
+ * @param array - Uint8Array representation of hex string
  * @returns - 0x Prefixed Hex String
  */
-export function uint8ArrayToHexString (array: Uint8Array) {
+function uint8ArrayToHexString (array: Uint8Array) : string {
   // Create empty hex string
   let hexString = ''
 
@@ -27,11 +27,17 @@ export function uint8ArrayToHexString (array: Uint8Array) {
  * @param array - Uint8Array representation of number
  * @returns - String representation of number
  */
-export function uint8ArrayToNumberString (array: Uint8Array) {
+function uint8ArrayToNumberString (array: Uint8Array) : string {
   return BigInt(uint8ArrayToHexString(array)).toString()
 }
 
-export function arrayToByteLength (byteArray: Uint8Array, length: number) {
+/**
+ * Pad an input array to request length
+ * @param byteArray - Input array
+ * @param length - Size
+ * @returns - Padded array of Uint8Array
+ */
+function arrayToByteLength (byteArray: Uint8Array, length: number) : Uint8Array {
   // Check the length of array requested is large enough to accommodate the original array
   if (byteArray.length > length) throw new Error('BigInt byte size is larger than length')
 
@@ -40,11 +46,11 @@ export function arrayToByteLength (byteArray: Uint8Array, length: number) {
 }
 /**
  * Convert number string to Uint8Array
- * @param bn - String representation of number
+ * @param ns - Number string
  * @param length  - Padded length required for hex string
  * @returns - Uint8Array representation of number string
  */
-export function numberStringToUint8Array (ns: string, length: number): Uint8Array {
+function numberStringToUint8Array (ns: string, length: number): Uint8Array {
   // Convert bigint to hex string
   let hex = BigInt(ns).toString(16)
 
@@ -59,3 +65,5 @@ export function numberStringToUint8Array (ns: string, length: number): Uint8Arra
 
   return arrayToByteLength(byteArray, length)
 }
+
+export { uint8ArrayToHexString, uint8ArrayToNumberString, arrayToByteLength, numberStringToUint8Array }

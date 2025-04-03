@@ -1,10 +1,13 @@
 import fs from 'fs'
+import path from 'path'
+
+import type { SnarkjsProof } from 'snarkjs'
+
+import type { CircuitInputs, Proof, ProverArtifacts } from '../src'
+import type { PublicInputs, SnarkJSCircuitInputFormat } from '../src/types'
+
 import vkey1x2 from './test-artifacts/1x2_vkey.json'
 import vkey2x2 from './test-artifacts/2x2_vkey.json'
-import path from 'path'
-import { CircuitInputs, Proof, ProverArtifacts } from '../src'
-import { SnarkjsProof } from 'snarkjs'
-import { PublicInputs, SnarkJSCircuitInputFormat } from '../src/types'
 
 const zkey1x2 = fs.readFileSync(path.resolve(__dirname, './test-artifacts/1x2_zkey'))
 const zkey2x2 = fs.readFileSync(path.resolve(__dirname, './test-artifacts/2x2_zkey'))
@@ -31,7 +34,7 @@ interface TestVector {
   artifacts: ProverArtifacts;
 }
 
-export const snarkJsProofs: SnarkjsProof[] = [
+const snarkJsProofs: SnarkjsProof[] = [
   {
     pi_a: [
       '945393213072472425648593815623030814902133402452915878780166940709184328936',
@@ -64,7 +67,7 @@ export const snarkJsProofs: SnarkjsProof[] = [
   }
 ]
 
-export const standardProofs: Proof[] = [
+const standardProofs: Proof[] = [
   {
     a:
     {
@@ -107,7 +110,7 @@ export const standardProofs: Proof[] = [
   }
 ]
 
-export const snarkJsCircuitInputs: SnarkJSCircuitInputFormat[] = [
+const snarkJsCircuitInputs: SnarkJSCircuitInputFormat[] = [
   {
     merkleRoot: '0x14a4f4001199b05fa5e3bd4ca9bd191084c891feac99be79272cdd671d5275b8',
     boundParamsHash: '0x1d64d5e8131bfc3fc3d10343fd3daf7798ae637302501b9058085eb0c2fd2fa1',
@@ -234,7 +237,7 @@ export const snarkJsCircuitInputs: SnarkJSCircuitInputFormat[] = [
   }
 ]
 
-export const standardPublicInputs: PublicInputs[] = [
+const standardPublicInputs: PublicInputs[] = [
   {
     proof: {
       a: {
@@ -355,7 +358,7 @@ export const standardPublicInputs: PublicInputs[] = [
   }
 ]
 
-export const snarkJsPublicInputs: string[][] = [
+const snarkJsPublicInputs: string[][] = [
   [
     '9337703918251132624253342157066541927765614436007056645327129240427092407736',
     '13295233644084502910930359176594948750552096129335803265477930686842410971041',
@@ -373,7 +376,7 @@ export const snarkJsPublicInputs: string[][] = [
   ]
 ]
 
-export const testVectors: TestVector[] = [
+const testVectors: TestVector[] = [
   {
     artifacts: artifacts1x2,
     inputs:
@@ -542,3 +545,5 @@ export const testVectors: TestVector[] = [
     }
   }
 ]
+
+export { snarkJsProofs, standardProofs, snarkJsCircuitInputs, standardPublicInputs, snarkJsPublicInputs, testVectors }

@@ -1,7 +1,9 @@
 import { hook, test } from 'brittle'
-import { snarkJsCircuitInputs, snarkJsProofs, snarkJsPublicInputs, standardProofs, standardPublicInputs, testVectors } from './test-vectors'
-import { cleanupSnarkJS, prove, verify } from '../src/index'
+
 import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from '../src/formatter'
+import { cleanupSnarkJS, prove, verify } from '../src/index'
+
+import { snarkJsCircuitInputs, snarkJsProofs, snarkJsPublicInputs, standardProofs, standardPublicInputs, testVectors } from './test-vectors'
 
 test('Should prove', async function (assert) {
   // Test with each circuit size (ex. 1x2, 2x2 etc.)
