@@ -38,7 +38,7 @@ test('Should ensure formatting is correct for SnarkjsProof', async function (ass
 test('Should ensure formatting is correct for Proof', async function (assert) {
   // For each circuit
   standardProofs.forEach((standardProof, i) => {
-  // Format a standard proof to snarkJs format
+    // Format a standard proof to snarkJs format
     const returnedSnarkJsProof = standardToSnarkJSProof(standardProof)
 
     // Ensure the formatted proof is correct
@@ -71,13 +71,10 @@ test('Should ensure formatting is correct for extracted PublicInputs', async fun
   // For each circuit
   testVectors.forEach((testVector, i) => {
     // Ensure testVector proof exists
-    if (!testVector.proof) {
-      console.log('No proof found for test vector', i)
-      return
-    }
+    assert.ok(testVector.proof, `Test vector ${i} is missing a proof, which is required for this test`)
 
     // Extract PublicInputs from existing CircuitInputs
-    const returnedPublicInputs = extractPublicInputsFromCircuitInputs(testVector.inputs, testVector.proof)
+    const returnedPublicInputs = extractPublicInputsFromCircuitInputs(testVector.inputs, testVector.proof as Proof)
 
     // Ensure the formatted public inputs are correct
     assert.alike(returnedPublicInputs, standardPublicInputs[i])
