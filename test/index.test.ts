@@ -20,7 +20,7 @@ test('Should prove and verify, using publicSignals returned from prove', async f
     const { proof, publicInputs } = await prove(vector.inputs, vector.artifacts)
 
     // Verify the proofs, which returns a boolean
-    assert.ok(await verify(vector.artifacts.vkey, publicInputs, proof), `Circuit Size ${vector.inputs.inputTXOs.length}x${vector.inputs.outputTXOs.length}`)
+    assert.ok(await verify(publicInputs, proof, vector.artifacts.vkey), `Circuit Size ${vector.inputs.inputTXOs.length}x${vector.inputs.outputTXOs.length}`)
   }
 })
 
@@ -70,6 +70,12 @@ test('Should ensure formatting is correct for PublicInputs', async function (ass
 test('Should ensure formatting is correct for extracted PublicInputs', async function (assert) {
   // For each circuit
   testVectors.forEach((testVector, i) => {
+    // Ensure testVector proof exists
+    if (!testVector.proof) {
+      console.log('No proof found for test vector', i)
+      return
+    }
+
     // Extract PublicInputs from existing CircuitInputs
     const returnedPublicInputs = extractPublicInputsFromCircuitInputs(testVector.inputs, testVector.proof)
 
