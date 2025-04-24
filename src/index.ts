@@ -15,7 +15,7 @@ import type { CircuitInputs, Proof, ProverArtifacts, PublicInputs } from './type
  * @param artifacts - Circuit artifacts, for ex. 1x2_zkey, 1x2.wasm, 1x2.vkey.json
  * @returns Object containing the standardized proof and public inputs needed for verification
  */
-export async function prove(circuitInputs: CircuitInputs, artifacts: ProverArtifacts): Promise<{ proof: Proof, publicInputs: PublicInputs }> {
+export async function prove (circuitInputs: CircuitInputs, artifacts: ProverArtifacts): Promise<{ proof: Proof, publicInputs: PublicInputs }> {
   // Format the inputs into snarkJS format
   const snarkJSFormattedInputs = standardToSnarkJSInput(circuitInputs)
 
@@ -51,7 +51,7 @@ export async function prove(circuitInputs: CircuitInputs, artifacts: ProverArtif
  * @param vkey - Verification key specific to the circuit type used (e.g., 1x2, 2x3)
  * @returns true if the proof is valid, false otherwise
  */
-export function verify(publicInputs: PublicInputs, proof: Proof, vkey: VKey): Promise<boolean> {
+export function verify (publicInputs: PublicInputs, proof: Proof, vkey: VKey): Promise<boolean> {
   // Convert standard proof to snarkJS format
   const snarkJSFormattedProof = standardToSnarkJSProof(proof)
   const snarkJSFormattedPublicInputs = standardToSnarkJSPublicInputs(publicInputs)
@@ -67,7 +67,7 @@ export function verify(publicInputs: PublicInputs, proof: Proof, vkey: VKey): Pr
  * https://github.com/iden3/snarkjs/issues/152
  * https://github.com/iden3/snarkjs/issues/393
  */
-export async function cleanupSnarkJS(): Promise<void> {
+export async function cleanupSnarkJS (): Promise<void> {
   // Initialize the curve object controlling wasm threads
   const curve = await curves.getCurveFromName('bn128')
 

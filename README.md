@@ -28,7 +28,7 @@ If you have the params required to call `prove()`, you also have all of the para
 - `prove()` is a more strongly typed and thorough version of what exists in the contracts repo for [forming a proof to prove on-chain](https://github.com/Railgun-Privacy/contract/blob/612b9687eae8c94d34bf09291ec35f1d8eea1ed2/helpers/logic/prover.ts#L49).
 - `verify()` is the typescript version of [proving a proof on-chain](https://github.com/Railgun-Privacy/contract/blob/612b9687eae8c94d34bf09291ec35f1d8eea1ed2/contracts/logic/Verifier.sol#L87)
 
-For detailed parameter types and return values (inputs and outputs), refer to the type definitions in `src/types.ts`.
+For detailed parameter types and return values (inputs and outputs), refer to the type definitions in [`src/types.ts`](src/types.ts).
 
 ## Creating new test vectors
 
