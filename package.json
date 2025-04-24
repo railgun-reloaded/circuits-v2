@@ -1,7 +1,7 @@
 {
   "name": "@railgun-reloaded/circuits-v2",
   "version": "1.0.0",
-  "description": "Prover / verifier for Railgun transaction circuit v2",
+  "description": "Typescript module for generating and verifying the transact proof required by Railgun",
   "homepage": "https://github.com/railgun-reloaded/circuits-v2#readme",
   "bugs": {
     "url": "https://github.com/railgun-reloaded/circuits-v2/issues"

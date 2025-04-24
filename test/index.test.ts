@@ -1,7 +1,7 @@
 import { hook, test } from 'brittle'
 
 import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from '../src/formatter'
-import { cleanupSnarkJS, prove, verify } from '../src/index'
+import { cleanupSnarkJS, Proof, prove, verify } from '../src/index'
 
 import { snarkJsCircuitInputs, snarkJsProofs, snarkJsPublicInputs, standardProofs, standardPublicInputs, testVectors } from './test-vectors'
 
@@ -20,7 +20,7 @@ test('Should prove and verify, using publicSignals returned from prove', async f
     const { proof, publicInputs } = await prove(vector.inputs, vector.artifacts)
 
     // Verify the proofs, which returns a boolean
-    assert.ok(await verify(vector.artifacts.vkey, publicInputs, proof), `Circuit Size ${vector.inputs.inputTXOs.length}x${vector.inputs.outputTXOs.length}`)
+    assert.ok(await verify(publicInputs, proof, vector.artifacts.vkey), `Circuit Size ${vector.inputs.inputTXOs.length}x${vector.inputs.outputTXOs.length}`)
   }
 })
 
@@ -38,7 +38,7 @@ test('Should ensure formatting is correct for SnarkjsProof', async function (ass
 test('Should ensure formatting is correct for Proof', async function (assert) {
   // For each circuit
   standardProofs.forEach((standardProof, i) => {
-  // Format a standard proof to snarkJs format
+    // Format a standard proof to snarkJs format
     const returnedSnarkJsProof = standardToSnarkJSProof(standardProof)
 
     // Ensure the formatted proof is correct
@@ -70,8 +70,11 @@ test('Should ensure formatting is correct for PublicInputs', async function (ass
 test('Should ensure formatting is correct for extracted PublicInputs', async function (assert) {
   // For each circuit
   testVectors.forEach((testVector, i) => {
+    // Ensure testVector proof exists
+    assert.ok(testVector.proof, `Test vector ${i} is missing a proof, which is required for this test`)
+
     // Extract PublicInputs from existing CircuitInputs
-    const returnedPublicInputs = extractPublicInputsFromCircuitInputs(testVector.inputs, testVector.proof)
+    const returnedPublicInputs = extractPublicInputsFromCircuitInputs(testVector.inputs, testVector.proof as Proof)
 
     // Ensure the formatted public inputs are correct
     assert.alike(returnedPublicInputs, standardPublicInputs[i])
