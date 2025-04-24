@@ -557,5 +557,3 @@ export const testVectors: TestVector[] = [
     }
   }
 ]
-
-export { snarkJsProofs, standardProofs, snarkJsCircuitInputs, standardPublicInputs, snarkJsPublicInputs, testVectors }

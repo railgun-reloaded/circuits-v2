@@ -2,7 +2,7 @@
  * Standard representation of circuit inputs for proof generation
  * These are the parameters required to create a valid RAILGUN transaction proof
  */
-export type CircuitInputs = {
+type CircuitInputs = {
   /** Current state root of the RAILGUN merkle tree */
   merkleRoot: Uint8Array,
   /** Hash of transaction parameters that bind this transaction to specific conditions */
@@ -82,7 +82,7 @@ type ProverArtifacts = {
  * PublicInputs for verifying, returned by prove()
  * NOTE: PublicInputs is the same as snarkJS.fullProve.PublicSignals
  */
-export type PublicInputs = {
+type PublicInputs = {
   /** Proof object for verification */
   proof: Proof;
   // State root when transaction was created
@@ -98,7 +98,7 @@ export type PublicInputs = {
 /**
  * Proof for verification
  */
-export type Proof = {
+type Proof = {
   a: {
     x: Uint8Array;
     y: Uint8Array;

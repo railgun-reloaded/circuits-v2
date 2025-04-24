@@ -1,7 +1,7 @@
 import { hook, test } from 'brittle'
 
 import { extractPublicInputsFromCircuitInputs, snarkJSToStandardProof, standardToSnarkJSInput, standardToSnarkJSProof, standardToSnarkJSPublicInputs } from '../src/formatter'
-import { cleanupSnarkJS, prove, verify } from '../src/index'
+import { cleanupSnarkJS, Proof, prove, verify } from '../src/index'
 
 import { snarkJsCircuitInputs, snarkJsProofs, snarkJsPublicInputs, standardProofs, standardPublicInputs, testVectors } from './test-vectors'
 
